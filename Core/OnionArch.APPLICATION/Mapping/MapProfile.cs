@@ -11,7 +11,7 @@ using OnionArch.APPLICATION.DTOs.Categories;
 using OnionArch.APPLICATION.DTOs.OrderDetails;
 using OnionArch.APPLICATION.DTOs.Orders;
 using OnionArch.APPLICATION.DTOs.Products;
-using OnionArch.APPLICATION.DTOs.Profiles;
+using OnionArch.APPLICATION.DTOs.AppUserProfiles;
 using OnionArch.DOMAIN.Concretes;
 
 namespace OnionArch.APPLICATION.Mapping

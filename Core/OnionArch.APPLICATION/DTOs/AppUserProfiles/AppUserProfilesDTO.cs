@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnionArch.APPLICATION.DTOs.Profiles
+namespace OnionArch.APPLICATION.DTOs.AppUserProfiles
 {
     public class AppUserProfilesDTO:BaseDTO
     {
