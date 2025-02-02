@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\OnionArch.APPLICATION\OnionArch.APPLICATION.csproj" />
+    <ProjectReference Include="..\..\Core\OnionArch.CONTRACT\OnionArch.CONTRACT.csproj" />
+    <ProjectReference Include="..\..\Core\OnionArch.DOMAIN\OnionArch.DOMAIN.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -13,7 +13,6 @@ namespace OnionArch.APPLICATION.Managers
     {
         Task<List<T>> GetAllAsync();
         Task<T> GetByIdAsync(int id);
-        Task<IQueryable<T>> WhereAsync(Expression<Func<D, bool>> expression);
         Task<T> FirstOrDefaultAsync(Expression<Func<D, bool>> expression);
         Task<bool> AnyAsync(Expression<Func<D, bool>> expression);
             
