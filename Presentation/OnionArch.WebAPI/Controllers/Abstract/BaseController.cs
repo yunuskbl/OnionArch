@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+<<<<<<< HEAD
 using Microsoft.AspNetCore.Authorization;
+=======
+>>>>>>> ed2491a9edfc62b3d231383823927f345520eea2
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
@@ -25,6 +28,10 @@ namespace OnionArch.WebAPI.Controllers.Abstract
             _mapper = mapper;
         }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> ed2491a9edfc62b3d231383823927f345520eea2
         [HttpGet("api/get-all")]
         public async Task<IActionResult> GetAllAsync()
         {
@@ -39,9 +46,13 @@ namespace OnionArch.WebAPI.Controllers.Abstract
             return Ok(dtos);
         }
 
+<<<<<<< HEAD
         
         [HttpPost("api/add")]
 
+=======
+        [HttpPost("api/add")]
+>>>>>>> ed2491a9edfc62b3d231383823927f345520eea2
         public async Task<IActionResult> CreateAsync(TDto dto)
         {
             string message = await _manager.CreateAsync(dto);

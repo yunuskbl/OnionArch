@@ -1,7 +1,10 @@
 using OnionArch.PERSISTENCE.DependencyResolvers;
 using OnionArch.APPLICATION.DependencyResolvers;
 using OnionArch.INFRASTRUCTURE.DependencyResolvers;
+<<<<<<< HEAD
 using OnionArch.WebAPI.Middlewares;
+=======
+>>>>>>> ed2491a9edfc62b3d231383823927f345520eea2
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -28,8 +31,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+<<<<<<< HEAD
 app.UseMiddleware<ExceptionMiddleware>();
 
+=======
+>>>>>>> ed2491a9edfc62b3d231383823927f345520eea2
 app.UseAuthorization();
 
 app.MapControllers();
