@@ -61,7 +61,8 @@ namespace OnionArch.PERSISTENCE.Repositories
 
         public IQueryable<T> Where(Expression<Func<T, bool>> expression)
         {
-            return _context.Set<T>().Where(expression); 
+            var result = _context.Set<T>().Where(expression);
+            return result;
         }
     }
 }

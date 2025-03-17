@@ -1,21 +1,20 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using OnionArch.APPLICATION.DTOs.Products;
+using OnionArch.APPLICATION.Logging;
 using OnionArch.APPLICATION.Managers;
 using OnionArch.DOMAIN.Concretes;
-using OnionArch.INFRASTRUCTURE.ManagerConcretes;
+using OnionArch.WebAPI.Controllers.Abstract;
 
 namespace OnionArch.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class ProductController : BaseController<Product, ProductDTO, IProductManager>
     {
-        private readonly IProductManager _manager;
 
-        public ProductController(IProductManager manager)
+        public ProductController(IProductManager manager,IMapper mapper,ILoggerService loggerService) : base(manager,mapper,loggerService)
         {
-            _manager = manager;
         }
         [HttpGet("api/get-all")]
         public async Task<IActionResult> GetAll()

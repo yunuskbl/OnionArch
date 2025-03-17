@@ -11,20 +11,12 @@ using OnionArch.DOMAIN.Concretes;
 
 namespace OnionArch.INFRASTRUCTURE.ManagerConcretes
 {
-    public class AppRoleManager: BaseManager<AppRole,AppRoleDTO>,IAppRoleManager
+    public class AppRoleManager : BaseManager<AppRole, AppRoleDTO>, IAppRoleManager
     {
-<<<<<<< HEAD
 
-        public AppRoleManager(IAppRoleRepository repository,IMapper mapper) : base(repository,mapper)
+        public AppRoleManager(IAppRoleRepository repository, IMapper mapper) : base(repository, mapper)
         {
-          
-=======
-        IAppRoleRepository _repository;
 
-        public AppRoleManager(IAppRoleRepository repository, IMapper mapper) :base(repository,mapper)
-        {
-            _repository = repository;
->>>>>>> ed2491a9edfc62b3d231383823927f345520eea2
         }
     }
 }

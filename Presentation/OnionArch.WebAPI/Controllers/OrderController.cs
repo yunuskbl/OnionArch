@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OnionArch.APPLICATION.DTOs;
 using OnionArch.APPLICATION.DTOs.Orders;
+using OnionArch.APPLICATION.Logging;
 using OnionArch.APPLICATION.Managers;
 using OnionArch.DOMAIN.Concretes;
-using OnionArch.INFRASTRUCTURE.ManagerConcretes;
 using OnionArch.WebAPI.Controllers.Abstract;
 
 namespace OnionArch.WebAPI.Controllers
@@ -14,7 +14,7 @@ namespace OnionArch.WebAPI.Controllers
     [ApiController]
     public class OrderController : BaseController<Order, OrderDTO, IOrderManager>
     {
-        public OrderController(IOrderManager orderManager,IMapper mapper) : base(orderManager,mapper)
+        public OrderController(IOrderManager orderManager,IMapper mapper, ILoggerService logger) : base(orderManager,mapper, logger)
         {
 
         }

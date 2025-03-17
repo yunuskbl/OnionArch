@@ -8,17 +8,15 @@ using OnionArch.APPLICATION.DTOs.AppUser;
 using OnionArch.APPLICATION.Managers;
 using OnionArch.CONTRACT.Repositories;
 using OnionArch.DOMAIN.Concretes;
+using OnionArch.INFRASTRUCTURE.CrossCuttingConcerns.Logging;
+using Serilog;
 
 namespace OnionArch.INFRASTRUCTURE.ManagerConcretes
 {
     public class AppUserManager : BaseManager<AppUser, AppUserDTO>, IAppUserManager
     {
-        IAppUserRepository _repository;
-        IMapper _mapper;
-        public AppUserManager(IAppUserRepository repository, IMapper mapper) : base(repository, mapper)
+        public AppUserManager(IAppUserRepository repository, IMapper mapper) : base(repository,mapper)
         {
-            _repository = repository;
-            _mapper = mapper;
         }
     }
 }

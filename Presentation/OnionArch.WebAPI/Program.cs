@@ -1,7 +1,7 @@
 using OnionArch.PERSISTENCE.DependencyResolvers;
 using OnionArch.APPLICATION.DependencyResolvers;
 using OnionArch.INFRASTRUCTURE.DependencyResolvers;
-using OnionArch.WebAPI.Middlewares;
+using Serilog;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -27,8 +27,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthorization();
 

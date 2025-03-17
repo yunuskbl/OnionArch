@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OnionArch.APPLICATION.DTOs.AppRole;
 using OnionArch.APPLICATION.DTOs.AppUser;
+using OnionArch.APPLICATION.Logging;
 using OnionArch.APPLICATION.Managers;
 using OnionArch.DOMAIN.Concretes;
+using OnionArch.INFRASTRUCTURE.CrossCuttingConcerns.Logging;
 using OnionArch.WebAPI.Controllers.Abstract;
 
 namespace OnionArch.WebAPI.Controllers
@@ -13,7 +15,7 @@ namespace OnionArch.WebAPI.Controllers
     [ApiController]
     public class AppUserController : BaseController<AppUser, AppUserDTO, IAppUserManager>
     {
-        public AppUserController(IAppUserManager manager, IMapper mapper) : base(manager, mapper)
+        public AppUserController(IAppUserManager manager, IMapper mapper,ILoggerService logger) : base(manager, mapper, logger)
         {
 
         }
