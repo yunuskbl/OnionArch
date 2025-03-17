@@ -42,6 +42,12 @@ namespace OnionArch.WebAPI.Controllers
             List<ProductDTO> products = await _manager.GetProductsByCategoryIdAsync(Id);
             return Ok(products);
         }
+        [HttpGet("api/order-products")]
+        public async Task<IActionResult> OrderProductsAsync([FromQuery] bool ascending)
+        {
+            var products = await _manager.GetProductOrderByAscAsync(ascending);
+            return Ok(products);
+        }
 
         [HttpPost("api/add-product")]
         public async Task<IActionResult> AddProductAsync(ProductDTO product)

@@ -1,8 +1,5 @@
 ﻿using AutoMapper;
-<<<<<<< HEAD
 using Microsoft.AspNetCore.Authorization;
-=======
->>>>>>> ed2491a9edfc62b3d231383823927f345520eea2
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
@@ -28,10 +25,6 @@ namespace OnionArch.WebAPI.Controllers.Abstract
             _mapper = mapper;
         }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> ed2491a9edfc62b3d231383823927f345520eea2
         [HttpGet("api/get-all")]
         public async Task<IActionResult> GetAllAsync()
         {
@@ -39,20 +32,15 @@ namespace OnionArch.WebAPI.Controllers.Abstract
             
             return Ok(dtos);
         }
+
         [HttpGet("get-by-id")]
         public async Task<IActionResult> GetByIdAsync([FromQuery] int Id)
         {
             IDto dtos = await _manager.GetByIdAsync(Id);
             return Ok(dtos);
         }
-
-<<<<<<< HEAD
         
         [HttpPost("api/add")]
-
-=======
-        [HttpPost("api/add")]
->>>>>>> ed2491a9edfc62b3d231383823927f345520eea2
         public async Task<IActionResult> CreateAsync(TDto dto)
         {
             string message = await _manager.CreateAsync(dto);
@@ -66,6 +54,7 @@ namespace OnionArch.WebAPI.Controllers.Abstract
             string message = await _manager.UpdateAsync(dto);
             return Ok(message);
         }
+
         [HttpPut("api/delete")]
         public async Task<IActionResult> DeleteAsync(int Id)
         {
@@ -73,6 +62,7 @@ namespace OnionArch.WebAPI.Controllers.Abstract
             string message = await _manager.DeleteAsync(dto);
             return Ok(message);
         }
+
         [HttpDelete("api/remove")]
         public async Task<IActionResult> RemoveAsync(int Id)
         {

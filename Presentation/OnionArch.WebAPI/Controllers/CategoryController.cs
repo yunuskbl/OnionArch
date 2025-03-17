@@ -62,7 +62,7 @@ namespace OnionArch.WebAPI.Controllers
         public async Task<IActionResult> RemoveCategory(int id)
         {
             CategoryDTO category = await _categoryManager.GetByIdAsync(id);
-            string message = await _categoryManager.RemoveAsync(category);
+             string message = await _categoryManager.RemoveAsync(category);
 
             return Ok(message);
         }
