@@ -8,10 +8,6 @@ using OnionArch.DOMAIN.Abstracts;
 
 namespace OnionArch.CONTRACT.Repositories
 {
-<<<<<<< HEAD
-    
-=======
->>>>>>> ed2491a9edfc62b3d231383823927f345520eea2
     public interface IRepository<T> where T: class,IEntity
     {
         Task<List<T>> GetAllAsync();
@@ -19,10 +15,6 @@ namespace OnionArch.CONTRACT.Repositories
         IQueryable<T> Where(Expression<Func<T,bool>> expression);
         Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> expression);
         Task<bool> AnyAsync(Expression<Func<T, bool>> expression);
-<<<<<<< HEAD
-        
-=======
->>>>>>> ed2491a9edfc62b3d231383823927f345520eea2
         Task CreateAsync(T entity);
         Task UpdateAsync(T originEntity,T newEntity);
         Task DeleteAsync(T entity);
