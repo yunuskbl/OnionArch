@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OnionArch.APPLICATION.DTOs.AppRole;
 using OnionArch.APPLICATION.DTOs.AppUser;
@@ -15,9 +18,8 @@ namespace OnionArch.WebAPI.Controllers
     [ApiController]
     public class AppUserController : BaseController<AppUser, AppUserDTO, IAppUserManager>
     {
-        public AppUserController(IAppUserManager manager, IMapper mapper,ILoggerService logger) : base(manager, mapper, logger)
+        public AppUserController(IAppUserManager manager, IMapper mapper, ILoggerService logger) : base(manager, mapper, logger)
         {
-
         }
     }
 }

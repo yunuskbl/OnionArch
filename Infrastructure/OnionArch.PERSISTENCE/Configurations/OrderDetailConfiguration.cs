@@ -17,6 +17,7 @@ namespace OnionArch.PERSISTENCE.Configurations
             // OrderID ve ProductID alanları üzerinde bileşik bir indeks oluşturulur. 
             // Aynı ürünü tekrar eklemeye çalıştığında, bu bileşik indeks sayesinde hata alır. Bunun Yerine Adet Artırabilir
             // Gereksiz veri tekrarını engeller ve veri bütünlüğünü korur ayrıca ilgili sorguların performansını artırır.
+            
         }
     }
 }

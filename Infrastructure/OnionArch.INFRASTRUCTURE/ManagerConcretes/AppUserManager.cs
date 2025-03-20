@@ -18,5 +18,6 @@ namespace OnionArch.INFRASTRUCTURE.ManagerConcretes
         public AppUserManager(IAppUserRepository repository, IMapper mapper) : base(repository,mapper)
         {
         }
+
     }
 }

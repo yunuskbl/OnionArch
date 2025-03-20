@@ -15,6 +15,7 @@ namespace OnionArch.PERSISTENCE.Configurations
         {
             base.Configure(builder);
             builder.Property(p => p.UnitPrice).HasColumnType("money");
+            builder.HasMany(x => x.OrderDetails).WithOne(x => x.Product).HasForeignKey(x => x.ProductID).IsRequired();
         }
     }
 }

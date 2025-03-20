@@ -14,6 +14,7 @@ namespace OnionArch.PERSISTENCE.Configurations
         {
             base.Configure(builder);
             builder.HasIndex(p => new { p.UserID, p.RoleID }).IsUnique();
+
         }
     }
 }

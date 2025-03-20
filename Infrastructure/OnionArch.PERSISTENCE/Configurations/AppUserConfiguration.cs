@@ -18,6 +18,10 @@ namespace OnionArch.PERSISTENCE.Configurations
         {
             base.Configure(builder);
             builder.HasOne(x => x.Profile).WithOne(x=>x.User).HasForeignKey<AppUserProfile>(x=>x.AppUserId);
+            builder.Ignore(x => x.Id);
+            builder.HasOne(x => x.Profile).WithOne(x => x.User).HasForeignKey<AppUserProfile>(x => x.Id);
+            builder.HasMany(x => x.Orders).WithOne(x => x.User).HasForeignKey(x => x.AppUserID);
+            builder.HasMany(x => x.Roles).WithOne(x => x.User).HasForeignKey(x => x.UserID).IsRequired();
         }
 
     }

@@ -13,6 +13,7 @@ namespace OnionArch.PERSISTENCE.Configurations
         public override void Configure(EntityTypeBuilder<AppUserProfile> builder)
         {
             base.Configure(builder);
+
         }
     }
 }
