@@ -13,6 +13,6 @@ namespace OnionArch.DOMAIN.Concretes
         public string LastName { get; set; }
         public int? AppUserId { get; set; } 
 
-        public virtual AppUser User { get; set; }
+        public virtual AppUser AppUser { get; set; }
     }
 }

@@ -14,12 +14,10 @@ namespace OnionArch.INFRASTRUCTURE.ManagerConcretes
     public class CategoryManager : BaseManager<Category,CategoryDTO>,ICategoryManager
     {
         ICategoryRepository _repository;
-        IMapper _mapper;
 
         public CategoryManager(ICategoryRepository repository, IMapper mapper) : base(repository, mapper)
         {
             _repository = repository;
-            _mapper = mapper;
         }
 
         public async Task<List<CategoryDTO>> GetCategories()

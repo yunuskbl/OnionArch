@@ -12,7 +12,7 @@ using OnionArch.PERSISTENCE.ContextClasses;
 namespace OnionArch.PERSISTENCE.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20250310225318_init")]
+    [Migration("20250322152505_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -93,10 +93,7 @@ namespace OnionArch.PERSISTENCE.Migrations
             modelBuilder.Entity("OnionArch.DOMAIN.Concretes.AppUserProfile", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("AppUserId")
                         .HasColumnType("int");
@@ -123,10 +120,6 @@ namespace OnionArch.PERSISTENCE.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId")
-                        .IsUnique()
-                        .HasFilter("[AppUserId] IS NOT NULL");
-
                     b.ToTable("AppUserProfiles");
                 });
 
@@ -137,6 +130,12 @@ namespace OnionArch.PERSISTENCE.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AppRoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -158,10 +157,9 @@ namespace OnionArch.PERSISTENCE.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleID");
+                    b.HasIndex("AppRoleId");
 
-                    b.HasIndex("UserID", "RoleID")
-                        .IsUnique();
+                    b.HasIndex("AppUserId");
 
                     b.ToTable("AppUserRoles");
                 });
@@ -308,39 +306,41 @@ namespace OnionArch.PERSISTENCE.Migrations
 
             modelBuilder.Entity("OnionArch.DOMAIN.Concretes.AppUserProfile", b =>
                 {
-                    b.HasOne("OnionArch.DOMAIN.Concretes.AppUser", "User")
+                    b.HasOne("OnionArch.DOMAIN.Concretes.AppUser", "AppUser")
                         .WithOne("Profile")
-                        .HasForeignKey("OnionArch.DOMAIN.Concretes.AppUserProfile", "AppUserId");
+                        .HasForeignKey("OnionArch.DOMAIN.Concretes.AppUserProfile", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("OnionArch.DOMAIN.Concretes.AppUserRole", b =>
                 {
-                    b.HasOne("OnionArch.DOMAIN.Concretes.AppRole", "Role")
-                        .WithMany("UserRole")
-                        .HasForeignKey("RoleID")
+                    b.HasOne("OnionArch.DOMAIN.Concretes.AppRole", "AppRole")
+                        .WithMany("AppUserRoles")
+                        .HasForeignKey("AppRoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OnionArch.DOMAIN.Concretes.AppUser", "User")
-                        .WithMany("Roles")
-                        .HasForeignKey("UserID")
+                    b.HasOne("OnionArch.DOMAIN.Concretes.AppUser", "AppUser")
+                        .WithMany("AppUserRoles")
+                        .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Role");
+                    b.Navigation("AppRole");
 
-                    b.Navigation("User");
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("OnionArch.DOMAIN.Concretes.Order", b =>
                 {
-                    b.HasOne("OnionArch.DOMAIN.Concretes.AppUser", "User")
+                    b.HasOne("OnionArch.DOMAIN.Concretes.AppUser", "AppUser")
                         .WithMany("Orders")
                         .HasForeignKey("AppUserID");
 
-                    b.Navigation("User");
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("OnionArch.DOMAIN.Concretes.OrderDetail", b =>
@@ -373,17 +373,17 @@ namespace OnionArch.PERSISTENCE.Migrations
 
             modelBuilder.Entity("OnionArch.DOMAIN.Concretes.AppRole", b =>
                 {
-                    b.Navigation("UserRole");
+                    b.Navigation("AppUserRoles");
                 });
 
             modelBuilder.Entity("OnionArch.DOMAIN.Concretes.AppUser", b =>
                 {
+                    b.Navigation("AppUserRoles");
+
                     b.Navigation("Orders");
 
                     b.Navigation("Profile")
                         .IsRequired();
-
-                    b.Navigation("Roles");
                 });
 
             modelBuilder.Entity("OnionArch.DOMAIN.Concretes.Category", b =>

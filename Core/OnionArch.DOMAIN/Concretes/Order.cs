@@ -13,7 +13,7 @@ namespace OnionArch.DOMAIN.Concretes
         public string ShippedAddress { get; set; }
         public int? AppUserID { get; set; } 
 
-        public virtual AppUser User { get; set; }
+        public virtual AppUser AppUser { get; set; }
         public virtual ICollection<OrderDetail> Details { get; set; }  
     }
 }

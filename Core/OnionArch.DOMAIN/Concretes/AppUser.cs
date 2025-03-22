@@ -14,6 +14,6 @@ namespace OnionArch.DOMAIN.Concretes
 
         public virtual AppUserProfile Profile { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
-        public virtual ICollection<AppUserRole> Roles { get; set; }
+        public virtual ICollection<AppUserRole> AppUserRoles { get; set; }
     }
 }

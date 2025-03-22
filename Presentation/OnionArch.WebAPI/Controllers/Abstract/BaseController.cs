@@ -25,129 +25,201 @@ namespace OnionArch.WebAPI.Controllers.Abstract
             _logger = logger;
         }
 
-        [HttpGet("api/get-all")]
+        [HttpGet("get-all")]
         public async Task<IActionResult> GetAllAsync()
         {
             try
             {
-                await _logger.LogInformationAsync("GetAllAsync Metodu Çağırıldı");
+                _logger.LogInformationAsync("GetAllAsync Metodu Çalıştı");
                 List<TDto> dtos = await _manager.GetAllAsync();
-                await _logger.LogInformationAsync(" Başarıyla Getirildi");
-                return Ok(new { message = $"{dtos} Listelendi" });
+
+                Console.WriteLine($"Controller GetAllAsync Methodu {dtos?.Count ?? 0} kayıt");
+
+                if (dtos==null || !dtos.Any())
+                {
+                    return NotFound(new
+                    {
+                        success = false,
+                        message = "Veri bulunamadı"
+                    });
+                }
+                return Ok(new
+                {
+                    success = true,
+                    data = dtos,
+                    total=dtos.Count,
+                    message= "Listeleme Başarılı"
+                });
+
             }
             catch (Exception ex)
             {
-                await _logger.LogErrorAsync("Ürünler getirilirken hata oluştu", ex);
-                return StatusCode(500, new { message = "Bir hata oluştu" });
+                _logger.LogErrorAsync($"GetAllAsync metodu hatası: {ex.Message}");
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "Veriler getirilirken bir hata oluştu",
+                    error = ex.Message
+                });
             }
 
 
         }
 
         [HttpGet("get-by-id")]
-        public async Task<IActionResult> GetByIdAsync([FromQuery] int Id)
+        public async Task<IActionResult> GetByIdAsync([FromQuery] int id)
         {
             try
             {
-                await _logger.LogInformationAsync($"GetByIdAsync Metodu Çağırıldı. Id: {Id}");
-                IDto dtos = await _manager.GetByIdAsync(Id);
-                if (dtos == null)
+                var dto = await _manager.GetByIdAsync(id);
+                if (dto == null)
                 {
-                    await _logger.LogWarningAsync($"Id = {Id} Numaralı Bir Veri Yok");
-                    return NotFound(new {message="Bulunamadı."});
+                    _logger.LogErrorAsync($"GetByIdAsync: ID={id} için veri bulunamadı");
+                    return NotFound(new
+                    {
+                        success = false,
+                        message = "Veri bulunamadı"
+                    });
                 }
-                await _logger.LogInformationAsync(" Başarıyla Getirildi");
-                return Ok(dtos);
+
+                _logger.LogInformationAsync($"GetByIdAsync: ID={id} için veri getirildi");
+                return Ok(new
+                {
+                    success = true,
+                    data = dto
+                });
             }
             catch (Exception ex)
             {
-                await _logger.LogErrorAsync("Ürün getirilirken hata oluştu", ex);
-                return StatusCode(500, new { message = "Bir hata oluştu" });
+                _logger.LogErrorAsync($"GetByIdAsync hatası: {ex.Message}");
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "Veri getirilirken bir hata oluştu",
+                    error = ex.Message
+                });
             }
 
         }
 
-        [HttpPost("api/add")]
+        [HttpPost("add")]
         public async Task<IActionResult> CreateAsync(TDto dto)
         {
             try
             {
-                await _logger.LogInformationAsync($"Yeni ekleme isteği. Data: {System.Text.Json.JsonSerializer.Serialize(dto)}");
-                string message = await _manager.CreateAsync(dto);
-                await _logger.LogInformationAsync("Ekleme İşlemi Başarıyla Gerçekleşti");
-                return Ok(new { message });
+                _logger.LogInformationAsync("CreateAsync metodu çalıştı");
+                string logMessage = await _manager.CreateAsync(dto);
+                return Ok(new
+                {
+                    success = true,
+                    message = logMessage
+                });
             }
             catch (Exception ex)
             {
-                await _logger.LogErrorAsync("Ekleme işleminde hata oluştu", ex);
-                return StatusCode(500, new { message = "Ekleme işleminde bir hata oluştu" });
+                _logger.LogErrorAsync($"CreateAsync hatası: {ex.Message}");
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "Ekleme işleminde bir hata oluştu",
+                    error = ex.Message
+                });
             }
         }
 
-        [HttpPut("api/update")]
+        [HttpPut("update")]
         public async Task<IActionResult> UpdateAsync(TDto dto)
         {
             try
             {
-                await _logger.LogInformationAsync($"Güncelleme isteği. Data: {System.Text.Json.JsonSerializer.Serialize(dto)}");
-                string message = await _manager.UpdateAsync(dto);
-                await _logger.LogInformationAsync($"Id: {dto.Id} Numaralı Veri Güncellendi");
-                return Ok(new { message });
+                _logger.LogInformationAsync("UpdateAsync metodu çalıştı");
+                string logMessage = await _manager.UpdateAsync(dto);
+                return Ok(new
+                {
+                    success = true,
+                    message = logMessage
+                });
             }
             catch (Exception ex)
             {
-                await _logger.LogErrorAsync($"Id: {dto.Id} olan veri güncelleme işleminde hata oluştu", ex);
-                return StatusCode(500, new { message = "Güncelleme işleminde bir hata oluştu" });
+                _logger.LogErrorAsync("UpdateAsync metodu çalıştı fakat bir hata oluştu");
+                return StatusCode(500, new { message = "Güncelleme işleminde bir hata oluştu", ex });
             }
         }
 
-        [HttpPut("api/delete")]
-        public async Task<IActionResult> DeleteAsync(int Id)
+        [HttpPut("delete")]
+        public async Task<IActionResult> DeleteAsync(int id)
         {
             try
             {
-                await _logger.LogInformationAsync($"Silme isteği. Id: {Id}");
-                var dto = await _manager.GetByIdAsync(Id);
+                var dto = await _manager.GetByIdAsync(id);
 
                 if (dto == null)
                 {
-                    await _logger.LogWarningAsync($"Silinecek veri bulunamadı. Id: {Id}");
-                    return NotFound(new { message = "Veri bulunamadı" });
+                    _logger.LogErrorAsync($"DeleteAsync: ID={id} için veri bulunamadı");
+                    return NotFound(new
+                    {
+                        success = false,
+                        message = "Silinecek veri bulunamadı"
+                    });
                 }
 
-                string message = await _manager.DeleteAsync(dto);
-                await _logger.LogInformationAsync($"Id: {Id} olan veri başarıyla silindi");
-                return Ok(new { message });
+                string logMessage = await _manager.DeleteAsync(dto);
+                _logger.LogInformationAsync($"DeleteAsync: ID={id} için soft delete yapıldı");
+
+                return Ok(new
+                {
+                    success = true,
+                    message = logMessage
+                });
             }
             catch (Exception ex)
             {
-                await _logger.LogErrorAsync($"Id: {Id} olan veri silinirken hata oluştu", ex);
-                return StatusCode(500, new { message = "Veri silinirken bir hata oluştu" });
+                _logger.LogErrorAsync($"DeleteAsync hatası: {ex.Message}");
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "Silme işlemi sırasında bir hata oluştu",
+                    error = ex.Message
+                });
             }
         }
 
-        [HttpDelete("api/remove")]
-        public async Task<IActionResult> RemoveAsync(int Id)
+        [HttpDelete("remove")]
+        public async Task<IActionResult> RemoveAsync(int id)
         {
             try
             {
-                await _logger.LogInformationAsync($"Ürün kalıcı silme isteği. Id: {Id}");
-                var dto = await _manager.GetByIdAsync(Id);
+                var dto = await _manager.GetByIdAsync(id);
 
                 if (dto == null)
                 {
-                    await _logger.LogWarningAsync($"Kalıcı silinecek ürün bulunamadı. Id: {Id}");
-                    return NotFound(new { message = "Ürün bulunamadı" });
+                    _logger.LogErrorAsync($"RemoveAsync: ID={id} için veri bulunamadı");
+                    return NotFound(new
+                    {
+                        success = false,
+                        message = "Kalıcı olarak silinecek veri bulunamadı"
+                    });
                 }
 
-                string message = await _manager.RemoveAsync(dto);
-                await _logger.LogInformationAsync($"Id: {Id} olan ürün kalıcı olarak silindi");
-                return Ok(new { message });
+                string logMessage = await _manager.RemoveAsync(dto);
+                _logger.LogInformationAsync($"RemoveAsync: ID={id} için hard delete yapıldı");
+
+                return Ok(new
+                {
+                    success = true,
+                    message = logMessage
+                });
             }
             catch (Exception ex)
             {
-                await _logger.LogErrorAsync($"Id: {Id} olan ürün kalıcı silinirken hata oluştu", ex);
-                return StatusCode(500, new { message = "Ürün kalıcı silinirken bir hata oluştu" });
+                _logger.LogErrorAsync($"RemoveAsync hatası: {ex.Message}");
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "Kalıcı silme işlemi sırasında bir hata oluştu",
+                    error = ex.Message
+                });
             }
         }
     }

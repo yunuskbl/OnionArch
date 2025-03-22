@@ -6,6 +6,7 @@ using OnionArch.APPLICATION.Logging;
 using OnionArch.APPLICATION.Managers;
 using OnionArch.DOMAIN.Concretes;
 using OnionArch.INFRASTRUCTURE.CrossCuttingConcerns.Logging;
+using OnionArch.INFRASTRUCTURE.ManagerConcretes;
 using OnionArch.WebAPI.Controllers.Abstract;
 
 namespace OnionArch.WebAPI.Controllers
@@ -14,61 +15,49 @@ namespace OnionArch.WebAPI.Controllers
     [ApiController]
     public class CategoryController : BaseController<Category, CategoryDTO, ICategoryManager>
     {
-
-        public CategoryController(ICategoryManager manager,IMapper mapper,ILoggerService service): base(manager, mapper, service)
+        private ICategoryManager _categoryManager;
+        public CategoryController(ICategoryManager _categoryManager, IMapper mapper, ILoggerService service, ICategoryManager categoryManager) : base(_categoryManager, mapper, service)
         {
+            this._categoryManager = categoryManager;
         }
-        [HttpGet("api/get-categories")]
+        [HttpGet("active")]  // api/category/active şeklinde erişilebilir
         public async Task<IActionResult> GetCategories()
         {
-            List<CategoryDTO> categories = await _manager.GetCategories();
-            return Ok(categories);
-        }
-        [HttpGet("api/get-all-categories")]
-        public async Task<IActionResult> GetAllCategories()
-        {
-            List<CategoryDTO> categories = await _manager.GetAllAsync();
-            return Ok(categories);
+            try
+            {
+                _logger.LogInformationAsync("GetCategories metodu çalıştı");
+                List<CategoryDTO> categories = await _categoryManager.GetCategories();
+
+                if (categories == null || !categories.Any())
+                {
+                    return NotFound(new
+                    {
+                        success = false,
+                        message = "Aktif kategori bulunamadı"
+                    });
+                }
+
+                return Ok(new
+                {
+                    success = true,
+                    data = categories,
+                    message = "Aktif kategoriler başarıyla listelendi",
+                    total = categories.Count
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogErrorAsync($"GetCategories hatası: {ex.Message}");
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "Kategoriler listelenirken bir hata oluştu",
+                    error = ex.Message
+                });
+            }
         }
 
-        [HttpGet("api/get-category-by-id")]
-        public async Task<IActionResult> GetCategoryById(int id)
-        {
-            CategoryDTO category= await _manager.GetByIdAsync(id);
-            return Ok(category);
-        }
 
-        //Request Model
-        [HttpPost("api/add-category")]
-        public async Task<IActionResult> CreateCategory(CategoryDTO category)
-        {
-            // Request Model üzerinden validation logic işlemi yapılır.Sonra requestModel, CategoryDTO'ya maplenir
-            // ve CategoryDTO'ya gönderilir
-
-            await _manager.CreateAsync(category);
-            return Ok("Category Eklendi");
-        }
-        [HttpPut("api/update")]
-        public async Task<IActionResult> UpdateCategory(CategoryDTO category)
-        {
-            await _manager.UpdateAsync(category);
-            return Ok($"{category.Id} ID numaralı Kategori güncellendi");
-        }
-        [HttpPut("api/delete")]
-        public async Task<IActionResult> DeleteCategory(int id)
-        {
-            CategoryDTO category = await _manager.GetByIdAsync(id);
-            await _manager.DeleteAsync(category);
-            return Ok("Silindi");
-        }
-        [HttpDelete("api/remove")]
-        public async Task<IActionResult> RemoveCategory(int id)
-        {
-            CategoryDTO category = await _manager.GetByIdAsync(id);
-             string message = await _manager.RemoveAsync(category);
-
-            return Ok(message);
-        }
 
     }
 }

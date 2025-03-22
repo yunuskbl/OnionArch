@@ -68,8 +68,7 @@ namespace OnionArch.PERSISTENCE.Migrations
                 name: "AppUserProfiles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AppUserId = table.Column<int>(type: "int", nullable: true),
@@ -82,10 +81,11 @@ namespace OnionArch.PERSISTENCE.Migrations
                 {
                     table.PrimaryKey("PK_AppUserProfiles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AppUserProfiles_AppUsers_AppUserId",
-                        column: x => x.AppUserId,
+                        name: "FK_AppUserProfiles_AppUsers_Id",
+                        column: x => x.Id,
                         principalTable: "AppUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -96,6 +96,8 @@ namespace OnionArch.PERSISTENCE.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserID = table.Column<int>(type: "int", nullable: false),
                     RoleID = table.Column<int>(type: "int", nullable: false),
+                    AppUserId = table.Column<int>(type: "int", nullable: false),
+                    AppRoleId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -105,14 +107,14 @@ namespace OnionArch.PERSISTENCE.Migrations
                 {
                     table.PrimaryKey("PK_AppUserRoles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AppUserRoles_AppRoles_RoleID",
-                        column: x => x.RoleID,
+                        name: "FK_AppUserRoles_AppRoles_AppRoleId",
+                        column: x => x.AppRoleId,
                         principalTable: "AppRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AppUserRoles_AppUsers_UserID",
-                        column: x => x.UserID,
+                        name: "FK_AppUserRoles_AppUsers_AppUserId",
+                        column: x => x.AppUserId,
                         principalTable: "AppUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -196,22 +198,14 @@ namespace OnionArch.PERSISTENCE.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppUserProfiles_AppUserId",
-                table: "AppUserProfiles",
-                column: "AppUserId",
-                unique: true,
-                filter: "[AppUserId] IS NOT NULL");
+                name: "IX_AppUserRoles_AppRoleId",
+                table: "AppUserRoles",
+                column: "AppRoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppUserRoles_RoleID",
+                name: "IX_AppUserRoles_AppUserId",
                 table: "AppUserRoles",
-                column: "RoleID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AppUserRoles_UserID_RoleID",
-                table: "AppUserRoles",
-                columns: new[] { "UserID", "RoleID" },
-                unique: true);
+                column: "AppUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderDetails_OrderID_ProductID",

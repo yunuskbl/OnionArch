@@ -16,8 +16,6 @@ namespace OnionArch.PERSISTENCE.Configurations
         public override void Configure(EntityTypeBuilder<AppRole> builder)
         {
             base.Configure(builder);
-            builder.Ignore(x => x.Id);
-            builder.HasMany(x => x.UserRole).WithOne(x => x.Role).HasForeignKey(x => x.RoleID).IsRequired();
         }
     }
 }

@@ -12,7 +12,7 @@ namespace OnionArch.DOMAIN.Concretes
         public int UserID { get; set; }
         public int RoleID { get; set; }
 
-        public virtual AppUser User { get; set; }
-        public virtual AppRole Role { get; set; }
+        public virtual AppUser AppUser { get; set; }
+        public virtual AppRole AppRole { get; set; }
     }
 }

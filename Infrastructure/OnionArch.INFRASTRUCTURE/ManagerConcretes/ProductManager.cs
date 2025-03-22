@@ -14,12 +14,10 @@ namespace OnionArch.INFRASTRUCTURE.ManagerConcretes
     public class ProductManager:BaseManager<Product,ProductDTO>,IProductManager
     {
         IProductRepository _repository;
-        IMapper _mapper;
 
         public ProductManager(IProductRepository repository,IMapper mapper):base(repository,mapper)
         {
             _repository = repository;
-            _mapper = mapper;
         }
 
         public async Task<List<ProductDTO>> GetProductOrderByAscAsync(bool ascending)

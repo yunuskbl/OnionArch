@@ -43,7 +43,18 @@ namespace OnionArch.PERSISTENCE.Repositories
 
         public async Task<List<T>> GetAllAsync()
         {
-            return await _context.Set<T>().ToListAsync();
+            try
+            {
+                var result = await _context.Set<T>().ToListAsync();
+                Console.WriteLine($"Repository GettAllAsync : {result?.Count ?? 0} kayıt");
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Repository Error {ex.Message}");
+                throw;
+            }
         }
 
         public async Task<T> GetByIdAsync(int id)

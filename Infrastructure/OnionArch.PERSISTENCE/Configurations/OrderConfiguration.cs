@@ -12,8 +12,6 @@ namespace OnionArch.PERSISTENCE.Configurations
     {
         public override void Configure(EntityTypeBuilder<Order> builder)
         {
-            base.Configure(builder);
-            builder.HasMany(x => x.Details).WithOne(x => x.Order).HasForeignKey(x => x.OrderID).IsRequired();
         }
     }
 }

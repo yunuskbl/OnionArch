@@ -16,8 +16,7 @@ namespace OnionArch.APPLICATION.Managers
         Task<TDto> GetByIdAsync(int id);
         IQueryable<TDto> Where(Expression<Func<TEntity, bool>> expression);
         Task<TDto> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> expression);
-        Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression);
-        Task MakePassiveAsync(TDto entity);
+        
         Task<string> CreateAsync(TDto entity);
         Task<string> UpdateAsync(TDto entity);
         Task<string> DeleteAsync(TDto entity);

@@ -12,7 +12,6 @@ namespace OnionArch.PERSISTENCE.Configurations
     {
         public override void Configure(EntityTypeBuilder<Category> builder)
         {
-            base.Configure(builder);
         }
     }
 }

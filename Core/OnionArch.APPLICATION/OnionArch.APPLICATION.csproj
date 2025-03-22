@@ -20,8 +20,4 @@
     <ProjectReference Include="..\OnionArch.DOMAIN\OnionArch.DOMAIN.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="FluentValidation\" />
-  </ItemGroup>
-
 </Project>

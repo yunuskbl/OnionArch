@@ -11,6 +11,6 @@ namespace OnionArch.DOMAIN.Concretes
     {
         public string RoleName { get; set; }
 
-        public virtual ICollection<AppUserRole> UserRole { get; set; }
+        public virtual ICollection<AppUserRole> AppUserRoles { get; set; }
     }
 }

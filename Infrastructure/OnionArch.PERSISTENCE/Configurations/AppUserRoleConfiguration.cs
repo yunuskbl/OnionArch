@@ -13,8 +13,6 @@ namespace OnionArch.PERSISTENCE.Configurations
         public override void Configure(EntityTypeBuilder<AppUserRole> builder)
         {
             base.Configure(builder);
-            builder.HasIndex(p => new { p.UserID, p.RoleID }).IsUnique();
-
         }
     }
 }
