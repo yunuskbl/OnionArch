@@ -33,7 +33,7 @@ namespace OnionArch.WebAPI.Controllers.Abstract
                 _logger.LogInformationAsync("GetAllAsync Metodu Çalıştı");
                 List<TDto> dtos = await _manager.GetAllAsync();
 
-                Console.WriteLine($"Controller GetAllAsync Methodu {dtos?.Count ?? 0} kayıt");
+                Console.WriteLine($"GetAllAsync Methodu {dtos?.Count ?? 0} kayıt");
 
                 if (dtos==null || !dtos.Any())
                 {
@@ -74,7 +74,7 @@ namespace OnionArch.WebAPI.Controllers.Abstract
                 var dto = await _manager.GetByIdAsync(id);
                 if (dto == null)
                 {
-                    _logger.LogErrorAsync($"GetByIdAsync: ID={id} için veri bulunamadı");
+                    _logger.LogErrorAsync($" GetByIdAsync: ID={id} için veri bulunamadı");
                     return NotFound(new
                     {
                         success = false,

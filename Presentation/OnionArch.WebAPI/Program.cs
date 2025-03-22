@@ -2,6 +2,7 @@ using OnionArch.PERSISTENCE.DependencyResolvers;
 using OnionArch.APPLICATION.DependencyResolvers;
 using OnionArch.INFRASTRUCTURE.DependencyResolvers;
 using OnionArch.INFRASTRUCTURE.Configurations;
+using OnionArch.WebAPI.Filters;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +13,10 @@ builder.Host.AddLoggerConfiguration(builder.Configuration);
 builder.Services.AddApplicationMapperService(); 
 builder.Services.AddRepositoryServices();
 builder.Services.AddDbContextService();
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<LoggingFiltersAttribute>();
+});
 builder.Services.AddManagerService();
 builder.Services.AddLoggerService();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
