@@ -13,22 +13,22 @@ namespace OnionArch.INFRASTRUCTURE.CrossCuttingConcerns.Logging
     {
         public void LogDebugAsync(string message)
         {
-            Log.Debug(message);
+            Log.Debug($"[LOG] {message}");
         }
 
         public void LogErrorAsync(string message, Exception? exception = null)
         {
-            Log.Error(exception, message);
+            Log.Error($"[ERROR] {exception}",message);
         }
 
         public void LogInformationAsync(string message)
         {
-            Log.Information(message);
+               Log.Information("[LOG] {Message}", message);
         }
 
         public void LogWarningAsync(string message)
         {
-            Log.Warning(message);
+            Log.Warning("[WARNING] {Message}", message);
         }
 
     }

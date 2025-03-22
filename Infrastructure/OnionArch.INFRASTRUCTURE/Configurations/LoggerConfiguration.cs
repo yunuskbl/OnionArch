@@ -22,6 +22,7 @@ namespace OnionArch.INFRASTRUCTURE.Configurations
                 .WriteTo.File(
                     Path.Combine(logDirectory, "log.txt"),
                     rollingInterval: RollingInterval.Day,
+                    outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss}] [LOG-{Level}] {Message}{NewLine}",
                     rollOnFileSizeLimit: true);
             });
             return host;

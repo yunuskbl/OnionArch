@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
+using OnionArch.APPLICATION.Logging;
 
 namespace OnionArch.WebAPI.Filters
 {
@@ -27,8 +28,14 @@ namespace OnionArch.WebAPI.Filters
                 }
             }
             Console.WriteLine($"[LOG] {controllerType.Name} --> {managerType} metodu çalıştı");
+            var loggerService = context.HttpContext.RequestServices.GetService(typeof(ILoggerService)) as ILoggerService;
+            if (loggerService != null)
+            {
+                string logMessage = $"{controllerType.Name} --> {managerType} metodu çalıştı";
+                loggerService.LogInformationAsync(logMessage);
+            }
 
-    
+
             base.OnActionExecuting(context);
         }
     }

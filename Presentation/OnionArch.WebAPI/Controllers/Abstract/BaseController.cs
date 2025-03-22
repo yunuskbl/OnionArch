@@ -75,7 +75,7 @@ namespace OnionArch.WebAPI.Controllers.Abstract
                 if (dto == null)
                 {
                     _logger.LogErrorAsync($" GetByIdAsync: ID={id} için veri bulunamadı");
-                    return NotFound(new
+                    return StatusCode(500,new
                     {
                         success = false,
                         message = "Veri bulunamadı"
