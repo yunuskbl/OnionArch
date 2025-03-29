@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using OnionArch.APPLICATION.DTOs;
 using OnionArch.APPLICATION.Managers;
 using OnionArch.CONTRACT.Repositories;
@@ -32,6 +33,7 @@ namespace OnionArch.INFRASTRUCTURE.ManagerConcretes
 
         }
 
+        
         public async Task<string> CreateAsync(TDto entity)
         {
 
@@ -50,6 +52,7 @@ namespace OnionArch.INFRASTRUCTURE.ManagerConcretes
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
 
+        
         public async Task<string> DeleteAsync(TDto entity)
         {
             entity.DeletedDate = DateTime.Now;
@@ -61,12 +64,13 @@ namespace OnionArch.INFRASTRUCTURE.ManagerConcretes
             return "Silme İşlemi Gerçekleşti";
         }
 
+        
         public async Task<TDto> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> expression)
         {
             TEntity value = await _repository.FirstOrDefaultAsync(expression);
             return _mapper.Map<TDto>(value);
         }
-
+        
         public async Task<List<TDto>> GetAllAsync()
         {
             List<TEntity> values = await _repository.GetAllAsync();
@@ -74,6 +78,7 @@ namespace OnionArch.INFRASTRUCTURE.ManagerConcretes
 
         }
 
+        
         public async Task<TDto> GetByIdAsync(int id)
         {
             TEntity value = await _repository.GetByIdAsync(id);
@@ -87,6 +92,7 @@ namespace OnionArch.INFRASTRUCTURE.ManagerConcretes
         /// <param name="entity"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
+
         public async Task<string> RemoveAsync(TDto entity)
         {
 
@@ -100,7 +106,7 @@ namespace OnionArch.INFRASTRUCTURE.ManagerConcretes
             return $"{entity.Id} ID Numaralı Verinin Silme İşlemi Başarıyla Gerçekleşti";
 
         }
-
+        
         public async Task<string> UpdateAsync(TDto entity)
         {
             entity.ModifiedDate = DateTime.Now;
@@ -111,7 +117,7 @@ namespace OnionArch.INFRASTRUCTURE.ManagerConcretes
             return "Güncelleme İşlemi Başarıyla Gerçekleşti";
 
         }
-
+        
         public IQueryable<TDto> Where(Expression<Func<TEntity, bool>> expression)
         {
             var values = _repository.Where(expression);

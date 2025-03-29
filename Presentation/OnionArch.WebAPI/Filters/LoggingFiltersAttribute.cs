@@ -9,6 +9,7 @@ namespace OnionArch.WebAPI.Filters
         {
             var controllerType = context.Controller.GetType();
             string managerType = "Bilinmeyen Manager";
+            var actionName = context.ActionDescriptor.RouteValues["action"];
 
             var baseType = controllerType.BaseType;
 
@@ -27,11 +28,13 @@ namespace OnionArch.WebAPI.Filters
                     }
                 }
             }
-            Console.WriteLine($"[LOG] {controllerType.Name} --> {managerType} metodu çalıştı");
+            Console.WriteLine($"[LOG] {controllerType.Name} --> {managerType} Servisi çalıştı\n" +
+                    $"{actionName} Methodu Çalıştı.");
             var loggerService = context.HttpContext.RequestServices.GetService(typeof(ILoggerService)) as ILoggerService;
             if (loggerService != null)
             {
-                string logMessage = $"{controllerType.Name} --> {managerType} metodu çalıştı";
+                string logMessage = $"{controllerType.Name} --> {managerType} Servisi çalıştı.\n" +
+                    $"{actionName} Methodu Çalıştı.";
                 loggerService.LogInformationAsync(logMessage);
             }
 

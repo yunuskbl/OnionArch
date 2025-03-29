@@ -12,7 +12,7 @@ namespace OnionArch.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    
+
     public class AppRoleController : BaseController<AppRole,AppRoleDTO,IAppRoleManager>
     {
         public AppRoleController(IAppRoleManager manager, IMapper mapper,ILoggerService logger) : base(manager, mapper,logger)

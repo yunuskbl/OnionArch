@@ -12,7 +12,7 @@ using OnionArch.PERSISTENCE.ContextClasses;
 namespace OnionArch.PERSISTENCE.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20250322152505_init")]
+    [Migration("20250326141430_init")]
     partial class init
     {
         /// <inheritdoc />

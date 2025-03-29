@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnionArch.APPLICATION.DTOs;
 using OnionArch.APPLICATION.Logging;
@@ -25,15 +26,16 @@ namespace OnionArch.WebAPI.Controllers.Abstract
             _logger = logger;
         }
 
+
         [HttpGet("get-all")]
+        [Authorize(Roles ="Admin,Supplier,Moderator,Editor,Guest")]
         public async Task<IActionResult> GetAllAsync()
         {
+
             try
             {
-                _logger.LogInformationAsync("GetAllAsync Metodu Çalıştı");
                 List<TDto> dtos = await _manager.GetAllAsync();
 
-                Console.WriteLine($"GetAllAsync Methodu {dtos?.Count ?? 0} kayıt");
 
                 if (dtos==null || !dtos.Any())
                 {
@@ -54,7 +56,6 @@ namespace OnionArch.WebAPI.Controllers.Abstract
             }
             catch (Exception ex)
             {
-                _logger.LogErrorAsync($"GetAllAsync metodu hatası: {ex.Message}");
                 return StatusCode(500, new
                 {
                     success = false,
@@ -67,6 +68,7 @@ namespace OnionArch.WebAPI.Controllers.Abstract
         }
 
         [HttpGet("get-by-id")]
+        [Authorize(Roles ="Admin,Supplier,Moderator,Editor")]
         public async Task<IActionResult> GetByIdAsync([FromQuery] int id)
         {
             try
@@ -74,7 +76,6 @@ namespace OnionArch.WebAPI.Controllers.Abstract
                 var dto = await _manager.GetByIdAsync(id);
                 if (dto == null)
                 {
-                    _logger.LogErrorAsync($" GetByIdAsync: ID={id} için veri bulunamadı");
                     return StatusCode(500,new
                     {
                         success = false,
@@ -82,7 +83,6 @@ namespace OnionArch.WebAPI.Controllers.Abstract
                     });
                 }
 
-                _logger.LogInformationAsync($"GetByIdAsync: ID={id} için veri getirildi");
                 return Ok(new
                 {
                     success = true,
@@ -91,7 +91,6 @@ namespace OnionArch.WebAPI.Controllers.Abstract
             }
             catch (Exception ex)
             {
-                _logger.LogErrorAsync($"GetByIdAsync hatası: {ex.Message}");
                 return StatusCode(500, new
                 {
                     success = false,
@@ -103,11 +102,11 @@ namespace OnionArch.WebAPI.Controllers.Abstract
         }
 
         [HttpPost("add")]
+        [Authorize(Roles = "Admin,GeneralManager,SuperAdmin")]
         public async Task<IActionResult> CreateAsync(TDto dto)
         {
             try
             {
-                _logger.LogInformationAsync("CreateAsync metodu çalıştı");
                 string logMessage = await _manager.CreateAsync(dto);
                 return Ok(new
                 {
@@ -117,22 +116,21 @@ namespace OnionArch.WebAPI.Controllers.Abstract
             }
             catch (Exception ex)
             {
-                _logger.LogErrorAsync($"CreateAsync hatası: {ex.Message}");
-                return StatusCode(500, new
+                return BadRequest( new
                 {
                     success = false,
                     message = "Ekleme işleminde bir hata oluştu",
-                    error = ex.Message
+                    error = ex
                 });
             }
         }
 
         [HttpPut("update")]
+        [Authorize(Roles ="Admin,Supplier,Moderator,Editor")]
         public async Task<IActionResult> UpdateAsync(TDto dto)
         {
             try
             {
-                _logger.LogInformationAsync("UpdateAsync metodu çalıştı");
                 string logMessage = await _manager.UpdateAsync(dto);
                 return Ok(new
                 {
@@ -142,12 +140,12 @@ namespace OnionArch.WebAPI.Controllers.Abstract
             }
             catch (Exception ex)
             {
-                _logger.LogErrorAsync("UpdateAsync metodu çalıştı fakat bir hata oluştu");
                 return StatusCode(500, new { message = "Güncelleme işleminde bir hata oluştu", ex });
             }
         }
 
         [HttpPut("delete")]
+        [Authorize(Roles = "Admin,GeneralManager,SuperAdmin")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
             try
@@ -156,7 +154,6 @@ namespace OnionArch.WebAPI.Controllers.Abstract
 
                 if (dto == null)
                 {
-                    _logger.LogErrorAsync($"DeleteAsync: ID={id} için veri bulunamadı");
                     return NotFound(new
                     {
                         success = false,
@@ -165,7 +162,6 @@ namespace OnionArch.WebAPI.Controllers.Abstract
                 }
 
                 string logMessage = await _manager.DeleteAsync(dto);
-                _logger.LogInformationAsync($"DeleteAsync: ID={id} için soft delete yapıldı");
 
                 return Ok(new
                 {
@@ -175,7 +171,6 @@ namespace OnionArch.WebAPI.Controllers.Abstract
             }
             catch (Exception ex)
             {
-                _logger.LogErrorAsync($"DeleteAsync hatası: {ex.Message}");
                 return StatusCode(500, new
                 {
                     success = false,
@@ -186,15 +181,17 @@ namespace OnionArch.WebAPI.Controllers.Abstract
         }
 
         [HttpDelete("remove")]
+        [Authorize(Roles ="Admin,Moderator")]
+
         public async Task<IActionResult> RemoveAsync(int id)
         {
+            
             try
             {
                 var dto = await _manager.GetByIdAsync(id);
 
                 if (dto == null)
                 {
-                    _logger.LogErrorAsync($"RemoveAsync: ID={id} için veri bulunamadı");
                     return NotFound(new
                     {
                         success = false,
@@ -203,7 +200,6 @@ namespace OnionArch.WebAPI.Controllers.Abstract
                 }
 
                 string logMessage = await _manager.RemoveAsync(dto);
-                _logger.LogInformationAsync($"RemoveAsync: ID={id} için hard delete yapıldı");
 
                 return Ok(new
                 {
@@ -213,7 +209,6 @@ namespace OnionArch.WebAPI.Controllers.Abstract
             }
             catch (Exception ex)
             {
-                _logger.LogErrorAsync($"RemoveAsync hatası: {ex.Message}");
                 return StatusCode(500, new
                 {
                     success = false,
