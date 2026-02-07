@@ -5,12 +5,13 @@ using OnionArch.APPLICATION.DTOs;
 using OnionArch.APPLICATION.Logging;
 using OnionArch.APPLICATION.Managers;
 using OnionArch.DOMAIN.Abstracts;
+using OnionArch.INFRASTRUCTURE.Services.JWT;
 
 namespace OnionArch.WebAPI.Controllers.Abstract
 {
     [Route("api/[controller]")]
     [ApiController]
-    public abstract class BaseController<TEntity, TDto, TManager> : ControllerBase
+    public abstract class BaseController<TEntity, TDto, TManager> : ControllerBase,IController<TEntity,TDto,TManager>
         where TEntity : class, IEntity
         where TDto : class, IDto
         where TManager : class, IManager<TEntity, TDto>
@@ -103,7 +104,7 @@ namespace OnionArch.WebAPI.Controllers.Abstract
 
         [HttpPost("add")]
         [Authorize(Roles = "Admin,GeneralManager,SuperAdmin")]
-        public async Task<IActionResult> CreateAsync(TDto dto)
+        public async virtual Task<IActionResult> CreateAsync(TDto dto)
         {
             try
             {

@@ -9,8 +9,8 @@ namespace OnionArch.DOMAIN.Concretes
 {
     public  class AppUserRole:BaseEntity
     {
-        //public int UserID { get; set; }
-        //public int RoleID { get; set; }
+        public int UserID { get; set; }
+        public int RoleID { get; set; }
 
         public virtual AppUser AppUser { get; set; }
         public virtual AppRole AppRole { get; set; }

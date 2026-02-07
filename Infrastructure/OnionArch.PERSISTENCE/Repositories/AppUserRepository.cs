@@ -11,9 +11,10 @@ namespace OnionArch.PERSISTENCE.Repositories
 {
     public class AppUserRepository:BaseRepository<AppUser>,IAppUserRepository
     {
-        public AppUserRepository(MyContext context):base(context)
+       
+        public AppUserRepository(MyContext context, IAppUserRoleRepository userRoleRepository) : base(context)
         {
-            
         }
+
     }
 }

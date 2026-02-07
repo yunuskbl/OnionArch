@@ -9,5 +9,6 @@ namespace OnionArch.CONTRACT.Repositories
 {
     public interface IAppRoleRepository:IRepository<AppRole>
     {
+
     }
 }

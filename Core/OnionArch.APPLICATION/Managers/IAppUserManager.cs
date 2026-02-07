@@ -8,7 +8,10 @@ using OnionArch.DOMAIN.Concretes;
 
 namespace OnionArch.APPLICATION.Managers
 {
-    public interface IAppUserManager:IManager<AppUser,AppUserDTO>
+    public interface IAppUserManager : IManager<AppUser, AppUserDTO>
     {
+        IEnumerable<string> GetUserRoles(int userId);
+        AppUser Authenticate(string username, string password);
+        bool VerifyPassword(string storedPassword, string enteredPassword);
     }
 }

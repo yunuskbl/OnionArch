@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnionArch.APPLICATION.DTOs.Products;
 using OnionArch.APPLICATION.Logging;
@@ -21,6 +22,11 @@ namespace OnionArch.WebAPI.Controllers
             _loggerService = loggerService;
         }
 
+        [Authorize(Roles ="Manager,Admin")]
+        public override Task<IActionResult> CreateAsync(ProductDTO dto)
+        {
+            return base.CreateAsync(dto);
+        }
 
         [HttpGet("get-products-by-category-id")]
         public async Task<IActionResult> GetProductByCategoryIdAsync([FromQuery] int Id)

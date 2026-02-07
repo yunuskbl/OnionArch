@@ -22,6 +22,7 @@ builder.Services.AddManagerService();
 builder.Services.AddLoggerService();
 builder.Services.AddFluentValidationService();
 builder.Services.AddAuthorization();
+builder.Services.AddJwtService();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -31,25 +32,26 @@ builder.Services.AddSwaggerGen(options =>
     {
         In = ParameterLocation.Header,
         Name = "Authorization",
-        Type = SecuritySchemeType.Http,
+        Type = SecuritySchemeType.ApiKey,
         BearerFormat = "JWT",
-        Scheme = "bearer",
-        Description = "Lütfen JWT tokeninizi Girin"
+        Scheme = "Bearer",
+        Description = "Enter your JWT Bearer token"
     });
+
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
             {
-                Reference = new OpenApiReference
                 {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] { }
                 }
-            },
-            new string[] { }
-        }
-    });
+            });
 });
 
 
@@ -61,7 +63,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("http://localhost:5211/swagger/v1/swagger.json","OnionArch.WebAPI v1");
+        c.SwaggerEndpoint("http://localhost:5211/swagger/v1/swagger.json", "OnionArch.WebAPI v1");
         //c.RoutePrefix = "swagger";
     });
 }

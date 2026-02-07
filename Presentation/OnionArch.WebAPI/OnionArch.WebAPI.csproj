@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <Folder Include="Attributes\" />
+    <Folder Include="DependecyResolvers\" />
     <Folder Include="logs\" />
     <Folder Include="Middlewares\" />
   </ItemGroup>
