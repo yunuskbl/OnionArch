@@ -8,6 +8,7 @@ namespace OnionArch.APPLICATION.DTOs.AppRole
 {
     public class AppRoleDTO:BaseDTO
     {
-        public string RoleName { get; set; }
+        public int RoleId { get; set; }
+        public string? RoleName { get; set; }
     }
 }

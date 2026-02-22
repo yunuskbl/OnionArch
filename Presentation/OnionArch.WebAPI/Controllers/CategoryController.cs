@@ -16,9 +16,9 @@ namespace OnionArch.WebAPI.Controllers
     public class CategoryController : BaseController<Category, CategoryDTO, ICategoryManager>
     {
         private ICategoryManager _categoryManager;
-        public CategoryController(ICategoryManager _categoryManager, IMapper mapper, ILoggerService service, ICategoryManager categoryManager) : base(_categoryManager, mapper, service)
+        public CategoryController( IMapper mapper, ILoggerService service, ICategoryManager categoryManager) : base(categoryManager, mapper, service)
         {
-            this._categoryManager = categoryManager;
+            _categoryManager = categoryManager;
         }
         [HttpGet("active")]  // api/category/active şeklinde erişilebilir
         public async Task<IActionResult> GetCategories()

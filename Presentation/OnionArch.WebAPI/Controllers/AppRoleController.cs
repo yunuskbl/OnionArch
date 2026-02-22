@@ -14,39 +14,40 @@ namespace OnionArch.WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class AppRoleController : IController<AppRole,AppRoleDTO,IAppRoleManager>
-        //BaseController<AppRole,AppRoleDTO,IAppRoleManager>
+    public class AppRoleController : IController<AppRole, AppRoleDTO, IAppRoleManager>
+    //BaseController<AppRole,AppRoleDTO,IAppRoleManager>
     {
-        public AppRoleController(IAppRoleManager manager, IMapper mapper,ILoggerService logger)
+        public AppRoleController(IAppRoleManager manager, IMapper mapper, ILoggerService logger)
         {
-                
+
         }
 
+        [HttpPost("create")]
         public Task<IActionResult> CreateAsync(AppRoleDTO dto)
         {
             throw new NotImplementedException();
         }
-
+        [HttpPatch("deactivate/{id}")]
         public Task<IActionResult> DeleteAsync(int id)
         {
             throw new NotImplementedException();
         }
-
+        [HttpGet]
         public Task<IActionResult> GetAllAsync()
         {
             throw new NotImplementedException();
         }
-
+        [HttpGet("{id}")]
         public Task<IActionResult> GetByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
-
+        [HttpDelete("{id}")]
         public Task<IActionResult> RemoveAsync(int id)
         {
             throw new NotImplementedException();
         }
-
+        [HttpPut]
         public Task<IActionResult> UpdateAsync(AppRoleDTO dto)
         {
             throw new NotImplementedException();

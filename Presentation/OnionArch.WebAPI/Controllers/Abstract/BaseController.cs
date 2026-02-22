@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnionArch.APPLICATION.DTOs;
@@ -9,9 +10,10 @@ using OnionArch.INFRASTRUCTURE.Services.JWT;
 
 namespace OnionArch.WebAPI.Controllers.Abstract
 {
+    [Authorize(Roles = "Admin,Supplier,Moderator,Editor,Guest")]
     [Route("api/[controller]")]
     [ApiController]
-    public abstract class BaseController<TEntity, TDto, TManager> : ControllerBase,IController<TEntity,TDto,TManager>
+    public class BaseController<TEntity, TDto, TManager> : ControllerBase,IController<TEntity,TDto,TManager>
         where TEntity : class, IEntity
         where TDto : class, IDto
         where TManager : class, IManager<TEntity, TDto>
@@ -146,7 +148,7 @@ namespace OnionArch.WebAPI.Controllers.Abstract
         }
 
         [HttpPut("delete")]
-        [Authorize(Roles = "Admin,GeneralManager,SuperAdmin")]
+        [Authorize(Roles = "Admin,GeneralManager,SuperAdmin,Moderator")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
             try
@@ -182,7 +184,7 @@ namespace OnionArch.WebAPI.Controllers.Abstract
         }
 
         [HttpDelete("remove")]
-        [Authorize(Roles ="Admin,Moderator")]
+        [Authorize(Roles = "Admin,GeneralManager")]
 
         public async Task<IActionResult> RemoveAsync(int id)
         {

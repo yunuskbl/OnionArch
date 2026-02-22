@@ -20,10 +20,10 @@ namespace OnionArch.WebAPI.Controllers
     [ApiController]
     public class AppUserController : BaseController<AppUser, AppUserDTO, IAppUserManager>
     {
-        private readonly IValidator<AppUserValidator> _validator;
-        public AppUserController(IAppUserManager manager, IMapper mapper, ILoggerService logger, IValidator<AppUserValidator> validator) : base(manager, mapper, logger)
+        private readonly IAppUserManager _appUserManager;
+        public AppUserController(IAppUserManager manager, IMapper mapper, ILoggerService logger) : base(manager, mapper, logger)
         {
-            _validator = validator;
+            _appUserManager = manager;
         }
     }
 }

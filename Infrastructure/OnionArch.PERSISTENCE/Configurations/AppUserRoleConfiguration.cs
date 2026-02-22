@@ -8,7 +8,7 @@ using OnionArch.DOMAIN.Concretes;
 
 namespace OnionArch.PERSISTENCE.Configurations
 {
-    public class AppUserRoleConfiguration:BaseConfiguration<AppUserRole>
+    public class AppUserRoleConfiguration : BaseConfiguration<AppUserRole>
     {
         public override void Configure(EntityTypeBuilder<AppUserRole> builder)
         {
