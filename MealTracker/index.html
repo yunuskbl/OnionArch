@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+<title>Öğün Takip</title>
+<meta name="theme-color" content="#2e9e6b" />
+<meta name="description" content="Telefonda kullanılabilen, sunucu gerektirmeyen öğün takip ve besin değeri uygulaması" />
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" href="icon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="icon.svg" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+
+  <header class="topbar">
+    <h1>🥗 Öğün Takip</h1>
+    <button class="icon-btn" id="date-today-btn" title="Bugüne dön">📅</button>
+  </header>
+
+  <!-- TODAY VIEW -->
+  <div class="view active" id="view-today">
+    <div class="date-nav">
+      <button class="icon-btn" id="date-prev">‹</button>
+      <div class="date-label">
+        <span id="date-label-text">Bugün</span>
+        <span class="date-sub" id="date-sub"></span>
+      </div>
+      <button class="icon-btn" id="date-next">›</button>
+    </div>
+
+    <main>
+      <div class="card summary-top" id="summary-card">
+        <div class="kcal-ring" id="kcal-ring" style="--pct:0">
+          <div class="kcal-num" id="kcal-num">0<small>/ 0 kcal</small></div>
+        </div>
+        <div class="summary-goal">
+          <div class="row" id="kcal-remaining"><b>0</b> kcal kaldı</div>
+          <div class="macro-bars">
+            <div class="macro-row">
+              <div class="label">Protein</div>
+              <div class="track"><div class="fill protein" id="bar-protein" style="width:0%"></div></div>
+              <div class="val" id="val-protein">0 / 0 g</div>
+            </div>
+            <div class="macro-row">
+              <div class="label">Karbonhidrat</div>
+              <div class="track"><div class="fill carb" id="bar-carb" style="width:0%"></div></div>
+              <div class="val" id="val-carb">0 / 0 g</div>
+            </div>
+            <div class="macro-row">
+              <div class="label">Yağ</div>
+              <div class="track"><div class="fill fat" id="bar-fat" style="width:0%"></div></div>
+              <div class="val" id="val-fat">0 / 0 g</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="meal-sections"></div>
+    </main>
+  </div>
+
+  <!-- FOODS VIEW -->
+  <div class="view" id="view-foods">
+    <main>
+      <div class="search-box">
+        <input type="text" id="food-search" placeholder="Besin ara (ör. tavuk, elma...)" autocomplete="off" />
+      </div>
+      <div class="cat-chips" id="cat-chips"></div>
+      <div class="card" id="food-list" style="padding:6px 10px;"></div>
+      <button class="btn secondary" id="add-custom-food-btn" style="margin-top:6px;">+ Özel Besin Ekle</button>
+    </main>
+  </div>
+
+  <!-- HISTORY VIEW -->
+  <div class="view" id="view-history">
+    <main>
+      <div class="card" id="history-list" style="padding:6px 10px;"></div>
+    </main>
+  </div>
+
+  <!-- SETTINGS VIEW -->
+  <div class="view" id="view-settings">
+    <main>
+      <div class="card">
+        <h2 style="margin-top:0;font-size:0.95rem;">Günlük Hedefler</h2>
+        <div class="field">
+          <label>Kalori Hedefi (kcal)</label>
+          <input type="number" id="set-calorie" />
+        </div>
+        <div class="grid-3">
+          <div class="field">
+            <label>Protein (g)</label>
+            <input type="number" id="set-protein" />
+          </div>
+          <div class="field">
+            <label>Karbonhidrat (g)</label>
+            <input type="number" id="set-carb" />
+          </div>
+          <div class="field">
+            <label>Yağ (g)</label>
+            <input type="number" id="set-fat" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 style="margin-top:0;font-size:0.95rem;">Profilim (Hedef Hesaplama İçin)</h2>
+        <div class="grid-2">
+          <div class="field">
+            <label>Cinsiyet</label>
+            <select id="set-gender">
+              <option value="female">Kadın</option>
+              <option value="male">Erkek</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Yaş</label>
+            <input type="number" id="set-age" />
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label>Boy (cm)</label>
+            <input type="number" id="set-height" />
+          </div>
+          <div class="field">
+            <label>Kilo (kg)</label>
+            <input type="number" id="set-weight" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Aktivite Seviyesi</label>
+          <select id="set-activity">
+            <option value="1.2">Hareketsiz (masa başı)</option>
+            <option value="1.375">Az hareketli (haftada 1-3 gün)</option>
+            <option value="1.55">Orta hareketli (haftada 3-5 gün)</option>
+            <option value="1.725">Çok hareketli (haftada 6-7 gün)</option>
+            <option value="1.9">Aşırı hareketli (sporcu)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Hedef</label>
+          <select id="set-goaltype">
+            <option value="lose">Kilo vermek</option>
+            <option value="maintain">Kiloyu korumak</option>
+            <option value="gain">Kilo almak</option>
+          </select>
+        </div>
+        <button class="btn secondary" id="calc-goal-btn">Hedefleri Hesapla</button>
+      </div>
+
+      <button class="btn" id="settings-save-btn">Kaydet</button>
+
+      <div class="card" style="margin-top:14px;">
+        <h2 style="margin-top:0;font-size:0.95rem;">Görünüm</h2>
+        <div class="cat-chips">
+          <button class="chip theme-chip" data-theme="auto">Otomatik</button>
+          <button class="chip theme-chip" data-theme="light">Açık</button>
+          <button class="chip theme-chip" data-theme="dark">Koyu</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 style="margin-top:0;font-size:0.95rem;">Veri Yönetimi</h2>
+        <div class="grid-2">
+          <button class="btn secondary" id="export-btn">Yedeği İndir</button>
+          <label class="btn secondary" for="import-input" style="text-align:center;">Yedek Yükle</label>
+        </div>
+        <input type="file" id="import-input" accept="application/json" class="hidden" />
+        <button class="btn danger" id="clear-data-btn" style="margin-top:10px;">Tüm Verileri Sil</button>
+      </div>
+    </main>
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="tab active" data-tab="today"><span class="ic">📆</span>Bugün</button>
+    <button class="tab" data-tab="foods"><span class="ic">🍽️</span>Besinler</button>
+    <button class="tab" data-tab="history"><span class="ic">📊</span>Geçmiş</button>
+    <button class="tab" data-tab="settings"><span class="ic">⚙️</span>Ayarlar</button>
+  </nav>
+
+  <!-- Add food bottom sheet -->
+  <div class="sheet-backdrop" id="sheet-backdrop"></div>
+  <div class="sheet" id="add-sheet">
+    <div class="sheet-handle"></div>
+    <h3 id="sheet-title">Besin Ekle</h3>
+
+    <div class="form-tabs" id="form-tabs">
+      <button data-mode="food">Besinden Seç</button>
+      <button data-mode="quick">Hızlı Ekle</button>
+    </div>
+
+    <div class="meal-tabs" id="meal-tabs"></div>
+
+    <div id="food-mode-block">
+      <div class="preset-grams">
+        <button data-g="50">50g</button>
+        <button data-g="100">100g</button>
+        <button data-g="150">150g</button>
+        <button data-g="200">200g</button>
+        <button data-g="250">250g</button>
+      </div>
+      <div class="qty-row">
+        <button class="qty-btn" id="grams-minus">−</button>
+        <input type="number" id="grams-input" value="100" />
+        <button class="qty-btn" id="grams-plus">+</button>
+      </div>
+      <div class="preview-macros hidden" id="preview-macros">
+        <div><b id="pv-kcal">0</b>kcal</div>
+        <div><b id="pv-p">0g</b>protein</div>
+        <div><b id="pv-c">0g</b>karb.</div>
+        <div><b id="pv-f">0g</b>yağ</div>
+      </div>
+    </div>
+
+    <div id="quick-mode-block" class="hidden">
+      <div class="field">
+        <label>Ne yedin?</label>
+        <input type="text" id="quick-name" placeholder="ör. Restoran yemeği" />
+      </div>
+      <div class="grid-3">
+        <div class="field">
+          <label>Kalori</label>
+          <input type="number" id="quick-kcal" />
+        </div>
+        <div class="field">
+          <label>Protein (g)</label>
+          <input type="number" id="quick-p" />
+        </div>
+        <div class="field">
+          <label>Karb. (g)</label>
+          <input type="number" id="quick-c" />
+        </div>
+      </div>
+      <div class="field">
+        <label>Yağ (g)</label>
+        <input type="number" id="quick-f" />
+      </div>
+    </div>
+
+    <button class="btn" id="confirm-add-btn">Ekle</button>
+    <button class="btn secondary" id="sheet-close" style="margin-top:8px;">Vazgeç</button>
+  </div>
+
+  <!-- Custom food sheet -->
+  <div class="sheet" id="custom-food-sheet">
+    <div class="sheet-handle"></div>
+    <h3>Özel Besin Ekle</h3>
+    <div class="field">
+      <label>Besin Adı</label>
+      <input type="text" id="cf-name" placeholder="ör. Annemin böreği" />
+    </div>
+    <div class="field">
+      <label>Kategori (isteğe bağlı)</label>
+      <input type="text" id="cf-cat" placeholder="ör. Ev Yemeği" />
+    </div>
+    <p style="font-size:0.78rem;color:var(--text-dim);margin:4px 0 10px;">Aşağıdaki değerleri 100 gram için gir.</p>
+    <div class="grid-3">
+      <div class="field">
+        <label>Kalori</label>
+        <input type="number" id="cf-kcal" />
+      </div>
+      <div class="field">
+        <label>Protein (g)</label>
+        <input type="number" id="cf-p" />
+      </div>
+      <div class="field">
+        <label>Karb. (g)</label>
+        <input type="number" id="cf-c" />
+      </div>
+    </div>
+    <div class="field">
+      <label>Yağ (g)</label>
+      <input type="number" id="cf-f" />
+    </div>
+    <button class="btn" id="cf-save-btn">Kaydet</button>
+    <button class="btn secondary" id="cf-sheet-close" style="margin-top:8px;">Vazgeç</button>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script src="foods-data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
